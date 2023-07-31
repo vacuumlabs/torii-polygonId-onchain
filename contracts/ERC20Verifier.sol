@@ -27,24 +27,6 @@ contract ERC20Verifier is ERC20, ZKPVerifier {
     {}
 
     /**
-     * @dev _beforeProofSubmit
-     */
-    function _beforeProofSubmit(
-        uint64, /* requestId */
-        uint256[] memory inputs,
-        ICircuitValidator validator
-    ) internal view override {
-        // check that challenge input of the proof is equal to the msg.sender
-        address addr = GenesisUtils.int256ToAddress(
-            inputs[validator.getChallengeInputIndex()]
-        );
-        require(
-            _msgSender() == addr,
-            "address in proof is not a sender address"
-        );
-    }
-
-    /**
      * @dev _afterProofSubmit
      */
     function _afterProofSubmit(
@@ -58,25 +40,6 @@ contract ERC20Verifier is ERC20, ZKPVerifier {
         );
 
         uint256 id = inputs[validator.getChallengeInputIndex()];
-        // execute the airdrop
-        if (idToAddress[id] == address(0)) {
-            super._mint(_msgSender(), TOKEN_AMOUNT_FOR_AIRDROP_PER_ID);
-            addressToId[_msgSender()] = id;
-            idToAddress[id] = _msgSender();
-        }
-    }
-
-    /**
-     * @dev _beforeTokenTransfer
-     */
-    function _beforeTokenTransfer(
-        address, /* from */
-        address to,
-        uint256 /* amount */
-    ) internal view override {
-        require(
-            proofs[to][TRANSFER_REQUEST_ID] == true,
-            "only identities who provided proof are allowed to receive tokens"
-        );
+       
     }
 }

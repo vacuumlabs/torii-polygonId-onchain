@@ -3,7 +3,7 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomiclabs/hardhat-etherscan";
 import "@nomicfoundation/hardhat-toolbox";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
 // Config
 // ========================================================
@@ -17,18 +17,20 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 200
-      }
-    }
+        runs: 200,
+      },
+    },
   },
   networks: {
     mumbai: {
-      url: `${process.env.RPC_MUMBAI_URL || ''}`,
+      url: `${process.env.RPC_MUMBAI_URL || ""}`,
       accounts: process.env.WALLET_PRIVATE_KEY
         ? [`0x${process.env.WALLET_PRIVATE_KEY}`]
         : [],
-      allowUnlimitedContractSize: true
-    }
+      allowUnlimitedContractSize: true,
+      gas: 2100000,
+      gasPrice: 8000000000,
+    },
   },
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY || undefined,
